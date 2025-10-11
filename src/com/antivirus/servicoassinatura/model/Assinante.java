@@ -1,3 +1,5 @@
+package com.antivirus.servicoassinatura.model;
+
 public class Assinante {
     private int idAssinante;
     private String nome;
@@ -58,7 +60,4 @@ public class Assinante {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-
-
 }
-
