@@ -1,5 +1,7 @@
 package com.antivirus.servicoassinatura.model;
 
+import com.antivirus.servicoassinatura.util.Criptografia;
+
 public class Assinante {
     private int idAssinante;
     private String nome;

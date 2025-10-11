@@ -1,5 +1,6 @@
 package com.antivirus.servicoassinatura.model;
 
+import com.antivirus.servicoassinatura.util.StatusAssinatura;
 import java.time.LocalDate;
 
 public class Assinatura {
