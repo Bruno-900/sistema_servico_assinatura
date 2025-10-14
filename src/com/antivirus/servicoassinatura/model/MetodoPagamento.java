@@ -4,7 +4,7 @@ public class MetodoPagamento {
     private int idMetadoPagamento;
     private String detalhes;
 
-    public Pagamento(int idMetadoPagamento, String detalhes){
+    public MetodoPagamento(int idMetadoPagamento, String detalhes){
         this.idMetadoPagamento = idMetadoPagamento;
         this.detalhes = detalhes;
     }
