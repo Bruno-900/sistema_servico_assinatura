@@ -1,7 +1,5 @@
 package com.antivirus.servicoassinatura.model;
 
-import com.antivirus.servicoassinatura.util.Criptografia;
-
 public class Assinante {
     private int idAssinante;
     private String nome;
@@ -11,7 +9,7 @@ public class Assinante {
 
     /* Metodo contrutor */
 
-    public Assinante(int idAssinante, String nome, String cpf, String email, String senha){
+    public Assinante(){
         this.idAssinante = idAssinante;
         this.nome = nome;
         this.cpf = cpf;
@@ -21,7 +19,7 @@ public class Assinante {
 
     // Getters (para obter os valores)
 
-    public int getIdAssinante() {
+    public String getIdAssinante() {
         return idAssinante;
     }
 

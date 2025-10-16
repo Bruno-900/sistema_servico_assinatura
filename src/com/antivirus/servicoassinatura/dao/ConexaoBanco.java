@@ -9,7 +9,7 @@ public class ConexaoBanco {
     private static String USER = "root";
     private static String SENHA  = "12345";
 
-    public static Connection conexao(){
+    public static Connection getConexao(){
         Connection conexao = null;
 
         try{
@@ -28,7 +28,7 @@ public class ConexaoBanco {
     }
 
     public static void main(String[] args){
-        Connection conexao = conexao();
+        Connection conexao = getConexao();
         if (conexao != null){
             try {
                 conexao.close();
