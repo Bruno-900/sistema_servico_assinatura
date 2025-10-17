@@ -1,26 +1,45 @@
 package com.antivirus.servicoassinatura.model;
 
-import com.antivirus.servicoassinatura.util.Criptografia;
-
 public class Administrador {
+    private int idAdministrador;
     private String nome;
+    private String email;
     private String senha;
 
-    public Administrador(String nome, String senha){
+    public Administrador(){
+        this.idAdministrador =  idAdministrador;
         this.nome = nome;
+        this.email = email;
         this.senha = senha;
+
+    }
+
+    public int getIdAdministrador(){
+        return idAdministrador;
     }
 
     public String getNome(){
         return nome;
     }
 
+    public String getEmail(){
+        return email;
+    }
+
     public String getSenha(){
         return senha;
     }
 
+    public void setIdAdministrador(int idAdministrador) {
+        this.idAdministrador = idAdministrador;
+    }
+
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setSenha(String senha) {

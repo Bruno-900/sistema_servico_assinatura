@@ -19,7 +19,7 @@ public class Assinante {
 
     // Getters (para obter os valores)
 
-    public String getIdAssinante() {
+    public int getIdAssinante() {
         return idAssinante;
     }
 

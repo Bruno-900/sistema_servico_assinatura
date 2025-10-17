@@ -1,14 +1,18 @@
 package com.antivirus.servicoassinatura.model;
 
+import java.time.LocalDate;
+
 public class Avaliacao {
     private int idAvaliacao;
     private int nota;
     private String comentario;
+    private LocalDate data;
 
-    public Avaliacao(int idAvaliacao, int nota, String comentario){
+    public Avaliacao(){
         this.idAvaliacao = idAvaliacao;
         this.nota = nota;
         this.comentario = comentario;
+        this.data = data;
     }
 
     public int getIdAvaliacao() {
@@ -23,6 +27,10 @@ public class Avaliacao {
         return comentario;
     }
 
+    public LocalDate getData() {
+        return data;
+    }
+
     public void setIdAvaliacao(int idAvaliacao) {
         this.idAvaliacao = idAvaliacao;
     }
@@ -33,5 +41,9 @@ public class Avaliacao {
 
     public void setComentario(String comentario) {
         this.comentario = comentario;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 }

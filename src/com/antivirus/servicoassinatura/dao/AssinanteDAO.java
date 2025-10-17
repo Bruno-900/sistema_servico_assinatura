@@ -27,17 +27,16 @@ public class AssinanteDAO {
         }
     }
 
-    public void atualizarAssinante(Assinante assinante) {
+    public void atualizarAssinante(Assinante atualizarAssinante) {
         String sql = "UPDATE assinante SET nome = ?, cpf = ?, email = ?, senha = ? WHERE id_assinante = ? ";
         try (Connection conexao = ConexaoBanco.getConexao();
              PreparedStatement declarando = conexao.prepareStatement(sql)) {
 
 
-            declarando.setString(1, assinante.getNome());
-            declarando.setString(2, assinante.getCpf());
-            declarando.setString(3, assinante.getEmail());
-            declarando.setString(4, assinante.getSenha());
-            declarando.setString(5, assinante.getIdAssinante());
+            declarando.setString(1, atualizarAssinante.getNome());
+            declarando.setString(2, atualizarAssinante.getCpf());
+            declarando.setString(3, atualizarAssinante.getEmail());
+            declarando.setString(4, atualizarAssinante.getSenha());
 
             declarando.executeUpdate();
             System.out.println("Assinante atualizado !");
@@ -56,20 +55,20 @@ public class AssinanteDAO {
 
             while (resultado.next()) {
 
-                Assinante assinante = new Assinante();
+                Assinante listarAssinante = new Assinante();
 
-                assinante.setIdAssinante(resultado.getInt("id_assinante"));
-                assinante.setNome(resultado.getString("nome"));
-                assinante.setCpf(resultado.getString("cpf"));
-                assinante.setEmail(resultado.getString("email"));
-                assinante.setSenha(resultado.getString("senha"));
-                lista.add(assinante);
+                listarAssinante.setIdAssinante(resultado.getInt("id_assinante"));
+                listarAssinante.setNome(resultado.getString("nome"));
+                listarAssinante.setCpf(resultado.getString("cpf"));
+                listarAssinante.setEmail(resultado.getString("email"));
+                listarAssinante.setSenha(resultado.getString("senha"));
+                lista.add(listarAssinante);
             }
         }
         return lista;
     }
 
-    public void excluir(int id) {
+    public void excluirAssinante(int id) {
         String sql = "DELETE FROM assinante WHERE id_assinante = ?";
         try (Connection conexao = ConexaoBanco.getConexao();
              PreparedStatement declarando = conexao.prepareStatement(sql)) {
