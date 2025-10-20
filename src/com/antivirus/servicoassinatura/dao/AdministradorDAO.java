@@ -18,6 +18,7 @@ public class AdministradorDAO {
                 declarando.setString(3, novoAdministrador.getSenha());
 
                 declarando.executeUpdate();
+                System.out.println("Administrador cadastrado com sucesso !");
 
         } catch (SQLException erro) {
             System.out.println("❌ Erro ao cadastrar administrador: " + erro.getMessage());

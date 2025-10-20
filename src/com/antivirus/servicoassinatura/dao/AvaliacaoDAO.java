@@ -23,6 +23,7 @@ public class AvaliacaoDAO {
                 declarando.setTimestamp(3, timestamp);
 
                 declarando.executeUpdate();
+            System.out.println("Avalicao cadastrada com sucesso !");
 
 
         }catch (SQLException erro){

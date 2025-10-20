@@ -15,8 +15,8 @@ public class PlanoDAO {
             PreparedStatement declarando = conexao.prepareStatement(sql)) {
 
             declarando.setString(1,novoPlano.getNome());
-            declarando.setString(1,novoPlano.getDescricao());
-            declarando.setBigDecimal(1,novoPlano.getPreco());
+            declarando.setString(2,novoPlano.getDescricao());
+            declarando.setBigDecimal(3,novoPlano.getPreco());
 
             declarando.executeUpdate();
             System.out.println("Plano cadastrado !");
@@ -24,8 +24,6 @@ public class PlanoDAO {
         } catch (SQLException erro) {
             System.out.println("❌ Erro ao cadastrar plano: " + erro.getMessage());
         }
-
-
     }
 
     public void autualizarPlano(Plano atualizarPlano){

@@ -7,15 +7,17 @@ import java.math.BigDecimal;
 
 public class Pagamento {
     private int idPagamento;
-    private LocalDate dataPagamento;
     private BigDecimal valor;
+    private LocalDate dataPagamento;
     private StatusPagamento status;
+    private MetodoPagamento metodo;
 
-    public Pagamento(int idPagamento, LocalDate dataPagamento, BigDecimal valor, StatusPagamento status){
+    public Pagamento(int idPagamento, LocalDate dataPagamento, BigDecimal valor, StatusPagamento status, MetodoPagamento metodo){
         this.idPagamento = idPagamento;
         this.dataPagamento = dataPagamento;
         this.valor = valor;
         this.status = status;
+        this.metodo = metodo;
 
     }
 
@@ -31,8 +33,12 @@ public class Pagamento {
         return valor;
     }
 
-    public StatusPagamento getStatus() {
+    public String getStatus() {
         return status;
+    }
+
+    public MetodoPagamento getMetodo() {
+        return metodo;
     }
 
     public void setIdPagamento(int idPagamento) {
@@ -49,5 +55,9 @@ public class Pagamento {
 
     public void setStatus(StatusPagamento status) {
         this.status = status;
+    }
+
+    public void setMetodo(MetodoPagamento metodo) {
+        this.metodo = metodo;
     }
 }

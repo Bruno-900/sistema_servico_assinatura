@@ -5,11 +5,11 @@ import java.time.LocalDate;
 
 public class Assinatura {
     private int idAssinatura;
+    private StatusAssinatura status;
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    private StatusAssinatura status;
 
-    public Assinatura(int idAssinatura, LocalDate dataInicio, LocalDate dataFim, StatusAssinatura status){
+    public Assinatura(){
         this.idAssinatura = idAssinatura;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;

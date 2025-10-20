@@ -21,6 +21,7 @@ public class AssinanteDAO {
             declarando.setString(4, novoAssinante.getSenha());
 
             declarando.executeUpdate();
+            System.out.println("Assinante cadastrado!");
 
         } catch (SQLException erro) {
             System.out.println("❌ Erro ao cadastrar assinante: " + erro.getMessage());
@@ -62,6 +63,7 @@ public class AssinanteDAO {
                 listarAssinante.setCpf(resultado.getString("cpf"));
                 listarAssinante.setEmail(resultado.getString("email"));
                 listarAssinante.setSenha(resultado.getString("senha"));
+
                 lista.add(listarAssinante);
             }
         }
