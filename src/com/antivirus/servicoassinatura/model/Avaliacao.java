@@ -7,12 +7,26 @@ public class Avaliacao {
     private int nota;
     private String comentario;
     private LocalDate data;
+    private Assinante idAssinante;
 
     public Avaliacao(){
+
+    }
+
+    public Avaliacao(int nota, String comentario, LocalDate data, Assinante idAssinante){
+        this.nota = nota;
+        this.comentario = comentario;
+        this.data = data;
+        this.idAssinante =  idAssinante;
+    }
+
+
+    public Avaliacao(int idAvaliacao, int nota, String comentario, LocalDate data, Assinante idAssinante){
         this.idAvaliacao = idAvaliacao;
         this.nota = nota;
         this.comentario = comentario;
         this.data = data;
+        this.idAssinante =  idAssinante;
     }
 
     public int getIdAvaliacao() {
@@ -31,6 +45,10 @@ public class Avaliacao {
         return data;
     }
 
+    public Assinante getIdAssinante() {
+        return idAssinante;
+    }
+
     public void setIdAvaliacao(int idAvaliacao) {
         this.idAvaliacao = idAvaliacao;
     }
@@ -45,5 +63,9 @@ public class Avaliacao {
 
     public void setData(LocalDate data) {
         this.data = data;
+    }
+
+    public void setIdAssinante(Assinante idAssinante) {
+        this.idAssinante = idAssinante;
     }
 }

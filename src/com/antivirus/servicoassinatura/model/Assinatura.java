@@ -1,6 +1,8 @@
 package com.antivirus.servicoassinatura.model;
 
 import com.antivirus.servicoassinatura.util.StatusAssinatura;
+import com.antivirus.servicoassinatura.util.StatusPagamento;
+
 import java.time.LocalDate;
 
 public class Assinatura {
@@ -8,12 +10,28 @@ public class Assinatura {
     private StatusAssinatura status;
     private LocalDate dataInicio;
     private LocalDate dataFim;
+    private Assinante idAssinante;
+    private Plano idPlano;
 
     public Assinatura(){
+        
+    }
+
+    public Assinatura(StatusAssinatura status, LocalDate dataInicio, LocalDate dataFim, Assinante idAssinante, Plano idPlano){
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
+        this.status = status;
+        this.idAssinante = idAssinante;
+        this.idPlano = idPlano;
+    }
+
+    public Assinatura(int idAssinatura, StatusAssinatura status, LocalDate dataInicio, LocalDate dataFim, Assinante idAssinante, Plano idPlano){
         this.idAssinatura = idAssinatura;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.status = status;
+        this.idAssinante = idAssinante;
+        this.idPlano = idPlano;
     }
 
     public int getIdAssinatura() {
@@ -32,6 +50,14 @@ public class Assinatura {
         return status;
     }
 
+    public Assinante getIdAssinante(){
+        return idAssinante;
+    }
+
+    public Plano getIdPlano() {
+        return idPlano;
+    }
+
     public void setIdAssinatura(int idAssinatura) {
         this.idAssinatura = idAssinatura;
     }
@@ -48,4 +74,11 @@ public class Assinatura {
         this.status = status;
     }
 
+    public void setIdAssinante(Assinante idAssinante) {
+        this.idAssinante = idAssinante;
+    }
+
+    public void setIdPlano(Plano idPlano) {
+        this.idPlano = idPlano;
+    }
 }

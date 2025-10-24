@@ -1,5 +1,6 @@
 package com.antivirus.servicoassinatura.dao;
 
+import com.antivirus.servicoassinatura.model.Assinante;
 import com.antivirus.servicoassinatura.model.Avaliacao;
 
 import java.sql.*;
@@ -10,7 +11,7 @@ import java.util.List;
 public class AvaliacaoDAO {
 
     public void cadastrarAvaliacao(Avaliacao novaAvaliacao){
-        String sql = "INSERT INTO avaliacao (nota, comentario, data) VALUES (?,?,?)";
+        String sql = "INSERT INTO avaliacao (nota, comentario, data, fk_avaliacao_assinante) VALUES (?,?,?,?)";
         try(Connection conexao = ConexaoBanco.getConexao();
             PreparedStatement declarando = conexao.prepareStatement(sql)){
 
@@ -22,8 +23,10 @@ public class AvaliacaoDAO {
 
                 declarando.setTimestamp(3, timestamp);
 
+                declarando.setInt(4, novaAvaliacao.getIdAssinante().getIdAssinante());
+
                 declarando.executeUpdate();
-            System.out.println("Avalicao cadastrada com sucesso !");
+                System.out.println("Avalicao cadastrada com sucesso !");
 
 
         }catch (SQLException erro){
@@ -32,7 +35,7 @@ public class AvaliacaoDAO {
     }
 
     public void atualizarAvaliacao(Avaliacao atualizarAvalicao){
-        String sql = "UPDATE avaliacao SET nota = ?, comentario = ?, data = ? WHERE id_avaliacao = ?";
+        String sql = "UPDATE avaliacao SET nota = ?, comentario = ?, data = ?, fk_avaliacao_assinante ? =  WHERE id_avaliacao = ?";
         try (Connection conexao = ConexaoBanco.getConexao();
             PreparedStatement declarando = conexao.prepareStatement(sql)){
 
@@ -43,8 +46,8 @@ public class AvaliacaoDAO {
             Timestamp timestamp = Timestamp.valueOf(dataAvaliacao.atStartOfDay());
             declarando.setTimestamp(3, timestamp);
 
-            declarando.setInt(4, atualizarAvalicao.getIdAvaliacao());
-
+            declarando.setInt(4, atualizarAvalicao.getIdAssinante().getIdAssinante());
+            declarando.setInt(5, atualizarAvalicao.getIdAvaliacao());
 
             declarando.executeUpdate();
             System.out.println("Avaliacao atualizada !");
@@ -73,6 +76,10 @@ public class AvaliacaoDAO {
                 if (ts != null) {
                     listarAvaliacao.setData(ts.toLocalDateTime().toLocalDate());
                 }
+
+                //criando um objeto para a chave extrangeira.
+                Assinante chave = new Assinante();
+                chave.setIdAssinante(resultado.getInt("fk_avaliacao_assinante"));// id da fk.
 
                 lista.add(listarAvaliacao);
 

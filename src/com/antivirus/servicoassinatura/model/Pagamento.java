@@ -8,18 +8,26 @@ import java.math.BigDecimal;
 public class Pagamento {
     private int idPagamento;
     private BigDecimal valor;
+    private StatusPagamento statusPagamento;
     private LocalDate dataPagamento;
-    private StatusPagamento status;
     private MetodoPagamento metodo;
+    private MetodoPagamento idMetodoPagamento;
+    private Assinatura idAssinatura;
 
-    public Pagamento(int idPagamento, LocalDate dataPagamento, BigDecimal valor, StatusPagamento status, MetodoPagamento metodo){
-        this.idPagamento = idPagamento;
-        this.dataPagamento = dataPagamento;
-        this.valor = valor;
-        this.status = status;
-        this.metodo = metodo;
+    public Pagamento(){
 
     }
+
+    public Pagamento(BigDecimal valor, StatusPagamento statusPagamento, LocalDate dataPagamento, MetodoPagamento metodo, MetodoPagamento idMetodoPagamento, Assinatura idAssinatura){
+        this.valor = valor;
+        this.statusPagamento = statusPagamento;
+        this.dataPagamento = dataPagamento;
+        this.metodo = metodo;
+        this.idMetodoPagamento = idMetodoPagamento;
+        this.idAssinatura = idAssinatura;
+    }
+
+
 
     public int getIdPagamento() {
         return idPagamento;
@@ -33,12 +41,16 @@ public class Pagamento {
         return valor;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
     public MetodoPagamento getMetodo() {
         return metodo;
+    }
+
+    public MetodoPagamento getIdMetodoPagamento() {
+        return idMetodoPagamento;
+    }
+
+    public Assinatura getAssinatura(){
+        return idAssinatura;
     }
 
     public void setIdPagamento(int idPagamento) {
@@ -53,11 +65,19 @@ public class Pagamento {
         this.valor = valor;
     }
 
-    public void setStatus(StatusPagamento status) {
-        this.status = status;
-    }
-
     public void setMetodo(MetodoPagamento metodo) {
         this.metodo = metodo;
+    }
+
+    public void setIdMetodoPagamento(MetodoPagamento idMetodoPagamento) {
+        this.idMetodoPagamento = idMetodoPagamento;
+    }
+
+    public void setIdAssinatura(Assinatura idAssinatura) {
+        this.idAssinatura = idAssinatura;
+    }
+
+    public void setStatusPagamento(StatusPagamento statusPagamento) {
+        this.statusPagamento = this.statusPagamento;
     }
 }

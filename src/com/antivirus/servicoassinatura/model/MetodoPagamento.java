@@ -1,28 +1,55 @@
 package com.antivirus.servicoassinatura.model;
 
+import com.antivirus.servicoassinatura.util.StatusPagamento;
 import java.math.BigDecimal;
 
 public class MetodoPagamento {
-    private int idMetadoPagamento;
-    private String detalhes;
+    private int idMetodoPagamento;
+    private StatusPagamento metodo;
     private BigDecimal taxa; // Percentual ou valor fixo de taxa
     private boolean ativo; // Se o metodo está disponível
     private int prazoCompensacao; // Dias até confirmar o pagamento
+    private Assinante idAssinante;
 
     public MetodoPagamento(){
-        this.idMetadoPagamento = idMetadoPagamento;
-        this.detalhes = detalhes;
+        /*
+         * Construtor vazio necessário para o DAO.
+         * O construtor completo (com todos os parâmetros) é usado
+         * quando se deseja criar um novo metodo de pagamento no código
+         * antes de salvar no banco.
+         * No listarMetodoPagamento(), o DAO precisa deste construtor vazio.
+         */
+    }
+
+    public MetodoPagamento(StatusPagamento detalhes, BigDecimal taxa, boolean ativo, int prazoCompensacao, Assinante idAssinante){
+        this.metodo = detalhes;
         this.taxa = taxa;
         this.ativo = ativo;
         this.prazoCompensacao = prazoCompensacao;
+        this.idAssinante = idAssinante;
+    }
+
+    /*
+        Se o ID é gerado automaticamente no banco de dados (por AUTO_INCREMENT, IDENTITY, etc.),
+        então o ideal é não incluir o idMetodoPagamento no construtor, porque ele será definido depois (pelo banco ou pelo DAO).
+        pode ter dois construtores — um completo (com ID) e um sem ID, pra facilitar o uso no DAO:
+     */
+
+    public MetodoPagamento(int idMetadoPagamento, StatusPagamento detalhes, BigDecimal taxa, boolean ativo, int prazoCompensacao, Assinante idAssinante){
+        this.idMetodoPagamento = idMetadoPagamento;
+        this.metodo = detalhes;
+        this.taxa = taxa;
+        this.ativo = ativo;
+        this.prazoCompensacao = prazoCompensacao;
+        this.idAssinante = idAssinante;
     }
 
     public int getIdMetodoPagamento() {
-        return idMetadoPagamento;
+        return idMetodoPagamento;
     }
 
-    public String getDetalhes() {
-        return detalhes;
+    public StatusPagamento getMetodo() {
+        return metodo;
     }
 
     public BigDecimal getTaxa() {
@@ -37,12 +64,16 @@ public class MetodoPagamento {
         return prazoCompensacao;
     }
 
-    public void setIdMetodoPagamento(int idMetadoPagamento) {
-        this.idMetadoPagamento = idMetadoPagamento;
+    public Assinante getIdAssinante() {
+        return idAssinante;
     }
 
-    public void setDetalhes(String detalhes) {
-        this.detalhes = detalhes;
+    public void setIdMetodoPagamento(int idMetadoPagamento) {
+        this.idMetodoPagamento = idMetadoPagamento;
+    }
+
+    public void setMetodo(StatusPagamento metodo) {
+        this.metodo = metodo;
     }
 
     public void setTaxa(BigDecimal taxa) {
@@ -56,4 +87,8 @@ public class MetodoPagamento {
     public void setPrazoCompensacao(int prazoCompensacao) {
         this.prazoCompensacao = prazoCompensacao;
     }
+
+     public void setIdAssinante(Assinante idAssinante){
+        this.idAssinante = idAssinante;
+     }
 }
