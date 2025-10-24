@@ -2,6 +2,8 @@ package com.antivirus.servicoassinatura.dao;
 
 import com.antivirus.servicoassinatura.model.Assinante;
 import com.antivirus.servicoassinatura.model.MetodoPagamento;
+import com.antivirus.servicoassinatura.util.StatusPagamento;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,7 @@ public class MetodoPagamentoDAO {
         try (Connection conexao = ConexaoBanco.getConexao();
              PreparedStatement declarando = conexao.prepareStatement(sql)) {
 
-            declarando.setString(1, novoMetodoPagamento.getMetodo());
+            declarando.setObject(1, novoMetodoPagamento.getMetodo());
             declarando.setBigDecimal(2, novoMetodoPagamento.getTaxa());
             declarando.setBoolean(3, novoMetodoPagamento.getAtivo());
             declarando.setInt(4,novoMetodoPagamento.getPrazoCompensacao());
@@ -33,7 +35,7 @@ public class MetodoPagamentoDAO {
         try (Connection conexao = ConexaoBanco.getConexao();
              PreparedStatement declarando = conexao.prepareStatement(sql)) {
 
-            declarando.setString(1, atualizarMetodoPagamento.getMetodo());
+            declarando.setObject(1, atualizarMetodoPagamento.getMetodo());
             declarando.setBigDecimal(2, atualizarMetodoPagamento.getTaxa());
             declarando.setBoolean(3, atualizarMetodoPagamento.getAtivo());
             declarando.setInt(4, atualizarMetodoPagamento.getPrazoCompensacao());
@@ -62,7 +64,7 @@ public class MetodoPagamentoDAO {
                 MetodoPagamento listarMetodoPagamento = new MetodoPagamento();
 
                 listarMetodoPagamento.setIdMetodoPagamento(resultado.getInt("id_metodo_pagamento"));
-                listarMetodoPagamento.setMetodo(resultado.getString("detalhes"));
+                listarMetodoPagamento.setMetodo((StatusPagamento) resultado.getObject("detalhes"));
                 listarMetodoPagamento.setTaxa(resultado.getBigDecimal("taxa"));
                 listarMetodoPagamento.setAtivo(resultado.getBoolean("ativo"));
                 listarMetodoPagamento.setPrazoCompensacao(resultado.getInt("prazo_compensacao"));
