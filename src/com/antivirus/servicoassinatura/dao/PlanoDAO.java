@@ -1,8 +1,8 @@
 package com.antivirus.servicoassinatura.dao;
 
-import com.antivirus.servicoassinatura.model.Assinante;
 import com.antivirus.servicoassinatura.model.Plano;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class PlanoDAO {
         }
     }
 
-    public void autualizarPlano(Plano atualizarPlano){
+    public void atualizarPlano(Plano atualizarPlano){
         String sql = "UPDATE plano SET nome = ?, descricao = ?, preco = ? WHERE id_plano = ? ";
         try (Connection conexao = ConexaoBanco.getConexao();
              PreparedStatement declarando = conexao.prepareStatement(sql)) {
@@ -45,24 +45,26 @@ public class PlanoDAO {
 
     }
 
-    public List<Plano> listarPlano () throws SQLException {
+    public List<Plano> listarPlano() {
         List<Plano> lista = new ArrayList<>();
-        String sql = "SELECT * FROM plano";
-        try (Connection conexao = ConexaoBanco.getConexao();
-             Statement declarando = conexao.createStatement();
-             ResultSet resultado = declarando.executeQuery(sql)) {
+        String sql = "SELECT id_plano, nome, descricao, preco FROM plano ORDER BY nome";
 
-            while (resultado.next()) {
+        try (Connection conn = ConexaoBanco.getConexao();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
-                Plano plano = new Plano();
-
-                plano.setIdPlano(resultado.getInt("id_plano"));
-                plano.setNome(resultado.getString("nome"));
-                plano.setDescricao(resultado.getString("descreicao"));
-                plano.setPreco(resultado.getBigDecimal("preco"));
-
-                lista.add(plano);
+            while (rs.next()) {
+                Plano p = new Plano();
+                p.setIdPlano(rs.getInt("id_plano"));
+                p.setNome(rs.getString("nome"));
+                p.setDescricao(rs.getString("descricao"));
+                p.setPreco(rs.getBigDecimal("preco"));
+                lista.add(p);
             }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao listar planos: " + e.getMessage());
+            e.printStackTrace(); // <--- isso é importante pro console
         }
         return lista;
     }
@@ -80,5 +82,29 @@ public class PlanoDAO {
             System.out.println("❌ Erro ao excluir o plano: " + erro.getMessage());
         }
     }
+
+    public Plano buscarPorId(int id) {
+        String sql = "SELECT * FROM plano WHERE id_plano = ?";
+        try (Connection conexao = ConexaoBanco.getConexao();
+             PreparedStatement ps = conexao.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Plano p = new Plano();
+                p.setIdPlano(rs.getInt("id_plano"));
+                p.setNome(rs.getString("nome"));
+                p.setDescricao(rs.getString("descricao"));
+                p.setPreco(rs.getBigDecimal("preco"));
+                return p;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar plano: " + e.getMessage());
+        }
+        return null; // não encontrou
+    }
+
+
 }
 

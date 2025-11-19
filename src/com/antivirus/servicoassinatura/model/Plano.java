@@ -7,11 +7,8 @@ public class Plano {
     private String descricao;
     private BigDecimal preco;
 
-    public Plano(){
-        this.idPlano = idPlano;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
+    public Plano() {
+        // não coloca nada aqui!
     }
 
     public int getIdPlano(){

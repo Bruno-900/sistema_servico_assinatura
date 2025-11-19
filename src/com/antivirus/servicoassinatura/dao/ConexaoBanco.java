@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexaoBanco {
-    private static String URL = "jdbc:mysql://localhost:3306/nome_banco";
+    private static String URL = "jdbc:mysql://localhost:3306/servico_assinatura";
     private static String USER = "root";
-    private static String SENHA  = "12345";
+    private static String SENHA  = "";
 
     public static Connection getConexao(){
         Connection conexao = null;

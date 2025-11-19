@@ -79,5 +79,4 @@ public class AdministradorDAO {
             System.out.println("❌ Erro ao excluir o assinante: " + erro.getMessage());
         }
     }
-
 }

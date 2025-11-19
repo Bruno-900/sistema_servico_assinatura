@@ -6,6 +6,7 @@ public class Assinante {
     private String cpf;
     private String email;
     private String senha;
+    private int idPlano;
 
     /* Metodo contrutor */
 
@@ -39,6 +40,10 @@ public class Assinante {
         return senha;
     }
 
+    public int getIdPlano() {
+        return idPlano;
+    }
+
     // Setters (para modificar os valores)
 
     public void setIdAssinante(int idAssinante) {
@@ -60,4 +65,9 @@ public class Assinante {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public void setIdPlano(int idPlano) {
+        this.idPlano = idPlano;
+    }
+
 }

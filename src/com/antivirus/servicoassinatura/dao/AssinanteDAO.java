@@ -83,7 +83,28 @@ public class AssinanteDAO {
             System.out.println("❌ Erro ao excluir o assinante: " + erro.getMessage());
         }
     }
-}
 
+    public Assinante buscarPorId(int id) {
+        String sql = "SELECT * FROM assinante WHERE id_assinante = ?";
+        try (Connection c = ConexaoBanco.getConexao();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Assinante a = new Assinante();
+                a.setIdAssinante(rs.getInt("id_assinante"));
+                a.setNome(rs.getString("nome"));
+                a.setCpf(rs.getString("cpf"));
+                a.setEmail(rs.getString("email"));
+                a.setSenha(rs.getString("senha"));
+                a.setIdPlano(rs.getInt("id_plano"));
+                return a;
+            }
+        } catch (Exception e) {}
+        return null;
+    }
+
+
+}
 
 //depos adicionar pesquisas especificas(por id, por nome etc).
