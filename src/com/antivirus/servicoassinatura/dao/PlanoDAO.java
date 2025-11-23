@@ -10,7 +10,7 @@ import java.util.List;
 public class PlanoDAO {
 
     public void cadastrarPlano(Plano novoPlano){
-        String sql = "INSER INTO plano (nome, descricao, preco) VALUES (?,?,?)";
+        String sql = "INSERT INTO plano (nome, descricao, preco) VALUES (?,?,?)";
         try(Connection conexao = ConexaoBanco.getConexao();
             PreparedStatement declarando = conexao.prepareStatement(sql)) {
 
@@ -26,23 +26,22 @@ public class PlanoDAO {
         }
     }
 
-    public void atualizarPlano(Plano atualizarPlano){
-        String sql = "UPDATE plano SET nome = ?, descricao = ?, preco = ? WHERE id_plano = ? ";
-        try (Connection conexao = ConexaoBanco.getConexao();
-             PreparedStatement declarando = conexao.prepareStatement(sql)) {
+    public void atualizarPlano(Plano p) {
+        String sql = "UPDATE plano SET nome = ?, descricao = ?, preco = ? WHERE id_plano = ?";
 
+        try (Connection c = ConexaoBanco.getConexao();
+             PreparedStatement ps = c.prepareStatement(sql)) {
 
-            declarando.setString(1, atualizarPlano.getNome());
-            declarando.setString(2, atualizarPlano.getDescricao());
-            declarando.setBigDecimal(3, atualizarPlano.getPreco());
+            ps.setString(1, p.getNome());
+            ps.setString(2, p.getDescricao());
+            ps.setBigDecimal(3, p.getPreco());
+            ps.setInt(4, p.getIdPlano());
 
-            declarando.executeUpdate();
-            System.out.println("Plano atualizado !");
+            ps.executeUpdate();
 
-        } catch (SQLException erro) {
-            System.out.println("❌ Erro ao atualizar o Plano: " + erro.getMessage());
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar o Plano: " + e.getMessage());
         }
-
     }
 
     public List<Plano> listarPlano() {
@@ -69,24 +68,44 @@ public class PlanoDAO {
         return lista;
     }
 
-    public void excluirPlano(int id){
+    public void excluirPlano(int id) {
+        String verifica = "SELECT COUNT(*) FROM assinante WHERE id_plano = ?";
         String sql = "DELETE FROM plano WHERE id_plano = ?";
-        try (Connection conexao = ConexaoBanco.getConexao();
-             PreparedStatement declarando = conexao.prepareStatement(sql)) {
 
-            declarando.setInt(1, id);
-            declarando.executeUpdate();
-            System.out.println("Plano excluido com sucesso !");
+        try (Connection c = ConexaoBanco.getConexao()) {
+            // Verifica se alguém está usando o plano
+            PreparedStatement ps1 = c.prepareStatement(verifica);
+            ps1.setInt(1, id);
+            ResultSet rs = ps1.executeQuery();
+            rs.next();
+            int quantidade = rs.getInt(1);
 
-        } catch (SQLException erro) {
-            System.out.println("❌ Erro ao excluir o plano: " + erro.getMessage());
+            if (quantidade > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Exclusão bloqueada!\n\nEste plano possui " + quantidade +
+                                " assinante(s) ativo(s) e não pode ser excluído.\n\n",
+                        "Plano em uso", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Só chega aqui se ninguém estiver usando
+            PreparedStatement ps2 = c.prepareStatement(sql);
+            ps2.setInt(1, id);
+            ps2.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Plano excluído com sucesso!",
+                    "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao excluir o plano: " + e.getMessage());
         }
     }
 
+
     public Plano buscarPorId(int id) {
         String sql = "SELECT * FROM plano WHERE id_plano = ?";
-        try (Connection conexao = ConexaoBanco.getConexao();
-             PreparedStatement ps = conexao.prepareStatement(sql)) {
+        try (Connection conn = ConexaoBanco.getConexao();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -99,10 +118,10 @@ public class PlanoDAO {
                 p.setPreco(rs.getBigDecimal("preco"));
                 return p;
             }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao buscar plano: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return null; // não encontrou
+        return null;
     }
 
 

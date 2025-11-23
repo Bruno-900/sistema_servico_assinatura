@@ -14,6 +14,7 @@ public class TelaCadastroPlano extends javax.swing.JFrame {
     public TelaCadastroPlano(TelaListaPlano telaLista) {
         this.telaLista = telaLista;
         initComponents();
+
         setLocationRelativeTo(null);
     }
 

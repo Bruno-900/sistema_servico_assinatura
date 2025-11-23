@@ -2,25 +2,63 @@ package com.antivirus.servicoassinatura.Views;
 
 import com.antivirus.servicoassinatura.dao.PlanoDAO;
 import com.antivirus.servicoassinatura.model.Plano;
-import java.math.BigDecimal;
-import java.util.List;
-import javax.swing.JOptionPane;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
 public class TelaListaPlano extends javax.swing.JFrame {
 
-    private PlanoDAO planoDAO = new PlanoDAO();
+    private final PlanoDAO planoDAO = new PlanoDAO();
 
     public TelaListaPlano() {
         initComponents();
-        setLocationRelativeTo(null);
-        setTitle("Gerenciar Planos");
+        configurarJanela();
+        configurarTabela();
         carregarTabela();
+    }
+
+    // --- MESMO PADRÃO DA TELA DE ASSINANTES ---
+    private void configurarJanela() {
+        setExtendedState(JFrame.MAXIMIZED_BOTH);   // abre maximizado
+        setResizable(false);                       // não redimensiona
+        setTitle("Gerenciar Planos");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        try {
+            setIconImage(new ImageIcon(getClass().getResource("/icones/escudo.png")).getImage());
+        } catch (Exception ignored) {}
+
+        JLabel rodape = new JLabel("Desenvolvido por SEU NOME - 2025 ©", JLabel.CENTER);
+        rodape.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        rodape.setForeground(Color.GRAY);
+        getContentPane().add(rodape, BorderLayout.SOUTH);
+    }
+
+    private void configurarTabela() {
+
+        tabelaPlanos.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        tabelaPlanos.setRowHeight(35);
+
+        tabelaPlanos.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 16));
+        tabelaPlanos.getTableHeader().setBackground(new Color(0, 102, 204));
+        tabelaPlanos.getTableHeader().setForeground(Color.WHITE);
+
+        // Centralizar colunas
+        DefaultTableCellRenderer center = new DefaultTableCellRenderer();
+        center.setHorizontalAlignment(JLabel.CENTER);
+
+        for (int i = 0; i < tabelaPlanos.getColumnCount(); i++) {
+            tabelaPlanos.getColumnModel().getColumn(i).setCellRenderer(center);
+        }
     }
 
     private void carregarTabela() {
         DefaultTableModel modelo = (DefaultTableModel) tabelaPlanos.getModel();
         modelo.setNumRows(0);
+
         try {
             List<Plano> lista = planoDAO.listarPlano();
             for (Plano p : lista) {
@@ -39,93 +77,80 @@ public class TelaListaPlano extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tabelaPlanos = new javax.swing.JTable();
-        btnNovo = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
-        btnVoltar = new javax.swing.JButton();
+        jPanel1 = new JPanel(new BorderLayout());
+        jLabel1 = new JLabel("GERENCIAR PLANOS", SwingConstants.CENTER);
+        jScrollPane1 = new JScrollPane();
+        tabelaPlanos = new JTable();
+        JPanel painelBotoes = new JPanel();
+        btnNovo = new JButton();
+        btnEditar = new JButton();
+        btnExcluir = new JButton();
+        btnVoltar = new JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setResizable(false);
+        getContentPane().setLayout(new BorderLayout());
 
-        jPanel1.setBackground(new java.awt.Color(0, 102, 204));
+        // Cabeçalho
+        jPanel1.setBackground(new Color(0, 102, 204));
+        jLabel1.setFont(new Font("Segoe UI", Font.BOLD, 36));
+        jLabel1.setForeground(Color.WHITE);
+        jLabel1.setBorder(BorderFactory.createEmptyBorder(30, 0, 30, 0));
+        jPanel1.add(jLabel1, BorderLayout.NORTH);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 28));
-        jLabel1.setForeground(java.awt.Color.WHITE);
-        jLabel1.setText("GERENCIAR PLANOS");
+        // Tabela
+        tabelaPlanos.setModel(new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"ID", "Nome", "Descrição", "Preço"}
+        ) {
+            public boolean isCellEditable(int row, int column) { return false; }
+        });
 
-        tabelaPlanos.setModel(new javax.swing.table.DefaultTableModel(
-                new Object [][] {},
-                new String [] {"ID", "Nome", "Descrição", "Preço"}
-        ) { public boolean isCellEditable(int row, int column) { return false; }});
-        tabelaPlanos.setFont(new java.awt.Font("Segoe UI", 0, 14));
-        tabelaPlanos.setRowHeight(30);
         jScrollPane1.setViewportView(tabelaPlanos);
 
-        btnNovo.setBackground(new java.awt.Color(0, 153, 51));
-        btnNovo.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        btnNovo.setForeground(java.awt.Color.WHITE);
-        btnNovo.setText("NOVO PLANO");
-        btnNovo.addActionListener(evt -> new TelaCadastroPlano(this).setVisible(true));
+        JPanel painelTabela = new JPanel(new BorderLayout());
+        painelTabela.setBackground(Color.WHITE);
+        painelTabela.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
+        painelTabela.add(jScrollPane1, BorderLayout.CENTER);
+        jPanel1.add(painelTabela, BorderLayout.CENTER);
 
-        btnEditar.setBackground(new java.awt.Color(0, 102, 204));
-        btnEditar.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        btnEditar.setForeground(java.awt.Color.WHITE);
-        btnEditar.setText("EDITAR");
-        btnEditar.addActionListener(evt -> editarPlano());
+        // Painel de botões (igual ao da outra tela)
+        painelBotoes.setBackground(new Color(0, 102, 204));
+        painelBotoes.setBorder(BorderFactory.createEmptyBorder(20, 50, 30, 50));
+        painelBotoes.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, 10));
 
-        btnExcluir.setBackground(new java.awt.Color(204, 0, 0));
-        btnExcluir.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        btnExcluir.setForeground(java.awt.Color.WHITE);
-        btnExcluir.setText("EXCLUIR");
-        btnExcluir.addActionListener(evt -> excluirPlano());
-
+        btnVoltar.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btnVoltar.setText("← VOLTAR");
         btnVoltar.addActionListener(evt -> this.dispose());
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addGroup(jPanel1Layout.createParallelGroup()
-                                        .addComponent(jLabel1)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(btnVoltar)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(30, 30, 30))
-        );
-        jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup()
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(jLabel1)
-                                .addGap(30, 30, 30)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
-                                .addGroup(jPanel1Layout.createParallelGroup()
-                                        .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnNovo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(30, 30, 30))
-        );
+        btnNovo.setBackground(new Color(0, 153, 51));
+        btnNovo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        btnNovo.setForeground(Color.WHITE);
+        btnNovo.setText("NOVO PLANO");
+        btnNovo.setPreferredSize(new Dimension(220, 55));
+        btnNovo.addActionListener(evt -> new TelaCadastroPlano(this).setVisible(true));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup().addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE));
-        layout.setVerticalGroup(layout.createParallelGroup().addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE));
+        btnEditar.setBackground(new Color(0, 102, 204));
+        btnEditar.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        btnEditar.setForeground(Color.WHITE);
+        btnEditar.setText("EDITAR");
+        btnEditar.setPreferredSize(new Dimension(140, 55));
+        btnEditar.addActionListener(evt -> editarPlano());
 
+        btnExcluir.setBackground(new Color(204, 0, 0));
+        btnExcluir.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        btnExcluir.setForeground(Color.WHITE);
+        btnExcluir.setText("EXCLUIR");
+        btnExcluir.setPreferredSize(new Dimension(140, 55));
+        btnExcluir.addActionListener(evt -> excluirPlano());
+
+        painelBotoes.add(btnVoltar);
+        painelBotoes.add(btnNovo);
+        painelBotoes.add(btnEditar);
+        painelBotoes.add(btnExcluir);
+
+        jPanel1.add(painelBotoes, BorderLayout.SOUTH);
+
+        getContentPane().add(jPanel1, BorderLayout.CENTER);
         pack();
     }
 
@@ -135,6 +160,7 @@ public class TelaListaPlano extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Selecione um plano!");
             return;
         }
+
         int id = (int) tabelaPlanos.getValueAt(linha, 0);
         new TelaCadastroPlano(this, id).setVisible(true);
     }
@@ -145,17 +171,19 @@ public class TelaListaPlano extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Selecione um plano!");
             return;
         }
-        if (JOptionPane.showConfirmDialog(this, "Tem certeza que deseja excluir?", "Excluir", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            int id = (int) tabelaPlanos.getValueAt(linha, 0);
+
+        int id = (int) tabelaPlanos.getValueAt(linha, 0);
+        if (JOptionPane.showConfirmDialog(this,
+                "Deseja excluir este plano?",
+                "Excluir Plano",
+                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+
             planoDAO.excluirPlano(id);
             carregarTabela();
-            JOptionPane.showMessageDialog(this, "Plano excluído com sucesso!");
         }
     }
 
-    public void carregarTabelaNovamente() {
-        carregarTabela();
-    }
+    public void carregarTabelaNovamente() { carregarTabela(); }
 
     // Variables declaration
     private javax.swing.JButton btnEditar;
@@ -167,8 +195,4 @@ public class TelaListaPlano extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tabelaPlanos;
     // End of variables declaration
-
-    public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(() -> new TelaListaPlano().setVisible(true));
-    }
 }

@@ -1,124 +1,125 @@
 package com.antivirus.servicoassinatura.Views;
 
-import  com.antivirus.servicoassinatura.Views.TelaLogin;
-import com.antivirus.servicoassinatura.Views.TelaListaAssinante;
-import com.antivirus.servicoassinatura.Views.TelaListaPlano;
-
-import javax.swing.JOptionPane;
+import javax.swing.*;
+import java.awt.*;
 
 public class TelaPrincipal extends javax.swing.JFrame {
 
     public TelaPrincipal() {
         initComponents();
-        setLocationRelativeTo(null);
-        setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH); // abre maximizado (fica bonito)
+        configurarJanela();
+    }
+
+    private void configurarJanela() {
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setResizable(false);
+        setTitle("Sistema de Assinaturas - Painel Administrativo");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Ícone da janela
+        try {
+            setIconImage(new ImageIcon(getClass().getResource("/icones/escudo.png")).getImage());
+        } catch (Exception ignored) {}
+
+        // Rodapé com seu nome (igual às outras telas)
+        JLabel rodape = new JLabel("Projeto PSSI - 2025 ©", JLabel.CENTER);
+        rodape.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        rodape.setForeground(Color.GRAY);
+        rodape.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        getContentPane().add(rodape, BorderLayout.SOUTH);
     }
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        btnPlanos = new javax.swing.JButton();
-        btnAssinantes = new javax.swing.JButton();
-        btnSair = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        jPanel1 = new JPanel();
+        jLabel1 = new JLabel();
+        btnPlanos = new JButton();
+        btnAssinantes = new JButton();
+        btnSair = new JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Painel Administrativo - Sistema Antivirus");
+        getContentPane().setLayout(new BorderLayout());
 
-        jPanel1.setBackground(new java.awt.Color(0, 102, 204));
+        jPanel1.setBackground(new Color(0, 102, 204));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36));
-        jLabel1.setForeground(java.awt.Color.WHITE);
+        jLabel1.setFont(new Font("Segoe UI", Font.BOLD, 36));
+        jLabel1.setForeground(Color.WHITE);
+        jLabel1.setHorizontalAlignment(SwingConstants.CENTER);
         jLabel1.setText("PAINEL DO ADMINISTRADOR");
+        jLabel1.setBorder(BorderFactory.createEmptyBorder(50, 0, 40, 0));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18));
-        jLabel2.setForeground(java.awt.Color.WHITE);
-        jLabel2.setText("Escolha uma opção abaixo:");
+        // Painel com os dois botões grandes
+        JPanel painelCentro = new JPanel();
+        painelCentro.setOpaque(false);
+        painelCentro.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(30, 80, 30, 80);
 
-        btnPlanos.setBackground(new java.awt.Color(0, 153, 204));
-        btnPlanos.setFont(new java.awt.Font("Segoe UI", 1, 24));
-        btnPlanos.setForeground(java.awt.Color.WHITE);
-        //btnPlanos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icones/plano.png"))); // opcional
+        btnPlanos.setBackground(new Color(0, 153, 204));
+        btnPlanos.setFont(new Font("Segoe UI", Font.BOLD, 26));
+        btnPlanos.setForeground(Color.WHITE);
         btnPlanos.setText("GERENCIAR PLANOS");
-        btnPlanos.setPreferredSize(new java.awt.Dimension(400, 120));
+        btnPlanos.setPreferredSize(new Dimension(420, 130));
+        btnPlanos.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnPlanos.setFocusPainted(false);
         btnPlanos.addActionListener(evt -> new TelaListaPlano().setVisible(true));
+        // NÃO TEM NENHUM dispose() ou setVisible(false) → a tela principal FICA ABERTA!
 
-        btnAssinantes.setBackground(new java.awt.Color(0, 153, 51));
-        btnAssinantes.setFont(new java.awt.Font("Segoe UI", 1, 24));
-        btnAssinantes.setForeground(java.awt.Color.WHITE);
+        btnAssinantes.setBackground(new Color(0, 153, 51));
+        btnAssinantes.setFont(new Font("Segoe UI", Font.BOLD, 26));
+        btnAssinantes.setForeground(Color.WHITE);
         btnAssinantes.setText("GERENCIAR ASSINANTES");
-        btnAssinantes.setPreferredSize(new java.awt.Dimension(400, 120));
+        btnAssinantes.setPreferredSize(new Dimension(420, 130));
+        btnAssinantes.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnAssinantes.setFocusPainted(false);
         btnAssinantes.addActionListener(evt -> new TelaListaAssinante().setVisible(true));
+        // NENHUMA LINHA FECHA OU ESCONDE A TELA PRINCIPAL!
 
-        btnSair.setBackground(new java.awt.Color(204, 0, 0));
-        btnSair.setFont(new java.awt.Font("Segoe UI", 1, 18));
-        btnSair.setForeground(java.awt.Color.WHITE);
+        gbc.gridx = 0; gbc.gridy = 0;
+        painelCentro.add(btnPlanos, gbc);
+        gbc.gridx = 1;
+        painelCentro.add(btnAssinantes, gbc);
+
+        // Botão Sair (embaixo à direita)
+        JPanel painelSul = new JPanel(new FlowLayout(FlowLayout.RIGHT, 60, 30));
+        painelSul.setOpaque(false);
+
+        btnSair.setBackground(new Color(204, 0, 0));
+        btnSair.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        btnSair.setForeground(Color.WHITE);
         btnSair.setText("SAIR DO SISTEMA");
+        btnSair.setPreferredSize(new Dimension(280, 65));
+        btnSair.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnSair.setFocusPainted(false);
         btnSair.addActionListener(evt -> {
-            if (JOptionPane.showConfirmDialog(this, "Deseja realmente sair?", "Sair",
+            if (JOptionPane.showConfirmDialog(this,
+                    "Deseja realmente sair do sistema?", "Sair",
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 System.exit(0);
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(100, 100, 100)
-                                .addGroup(jPanel1Layout.createParallelGroup()
-                                        .addComponent(jLabel1)
-                                        .addComponent(jLabel2)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addComponent(btnPlanos, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(50, 50, 50)
-                                                .addComponent(btnAssinantes, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(btnSair, javax.swing.GroupLayout.Alignment.TRAILING, 200, 200, 200))
-                                .addContainerGap(100, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(80, 80, 80)
-                                .addComponent(jLabel1)
-                                .addGap(30, 30, 30)
-                                .addComponent(jLabel2)
-                                .addGap(60, 60, 60)
-                                .addGroup(jPanel1Layout.createParallelGroup()
-                                        .addComponent(btnPlanos, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(btnAssinantes, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(80, 80, 80)
-                                .addComponent(btnSair, 60, 60, 60)
-                                .addContainerGap(100, Short.MAX_VALUE))
-        );
+        painelSul.add(btnSair);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup().addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup().addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        // Montando tudo
+        jPanel1.setLayout(new BorderLayout());
+        jPanel1.add(jLabel1, BorderLayout.NORTH);
+        jPanel1.add(painelCentro, BorderLayout.CENTER);
+        jPanel1.add(painelSul, BorderLayout.SOUTH);
 
+        getContentPane().add(jPanel1, BorderLayout.CENTER);
         pack();
     }
 
     // Variables
-    private javax.swing.JButton btnAssinantes;
-    private javax.swing.JButton btnPlanos;
-    private javax.swing.JButton btnSair;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
+    private JButton btnAssinantes;
+    private JButton btnPlanos;
+    private JButton btnSair;
+    private JLabel jLabel1;
+    private JPanel jPanel1;
 
     public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(() -> {
-            new TelaPrincipal().setVisible(true);
-        });
+        java.awt.EventQueue.invokeLater(() -> new TelaPrincipal().setVisible(true));
     }
-
 }

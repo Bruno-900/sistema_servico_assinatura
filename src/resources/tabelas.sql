@@ -1,87 +1,52 @@
 CREATE DATABASE servico_assinatura;
 USE servico_assinatura;
 
--- -----------------------------------------------------
--- Tabela Assinante
--- -----------------------------------------------------
-CREATE TABLE assinante (
-  id_assinante INT PRIMARY KEY AUTO_INCREMENT,
-  nome         VARCHAR(45) NOT NULL,
-  cpf          VARCHAR(45) NOT NULL UNIQUE,
-  email        VARCHAR(45) NOT NULL,
-  senha        VARCHAR(45) NOT NULL
-);
-
--- -----------------------------------------------------
--- Tabela Plano
--- -----------------------------------------------------
-CREATE TABLE plano (
-  id_plano   INT PRIMARY KEY AUTO_INCREMENT,
-  nome       VARCHAR(45) NOT NULL,
-  descricao  TEXT NOT NULL,
-  preco      DECIMAL(10,2) NOT NULL
-);
-
--- -----------------------------------------------------
--- Tabela Avaliacao
--- -----------------------------------------------------
-CREATE TABLE avaliacao (
-  id_avaliacao    INT PRIMARY KEY AUTO_INCREMENT,
-  nota            INT NULL,
-  comentario      TEXT NULL,
-  data            VARCHAR(45) NOT NULL,
-  fk_id_assinante INT,
-  CONSTRAINT fk_avaliacao_assinante FOREIGN KEY (fk_id_assinante) REFERENCES assinante(id_assinante)
-);
-
--- -----------------------------------------------------
--- Tabela Assinatura
--- -----------------------------------------------------
-CREATE TABLE assinatura (
-  id_assinatura       INT PRIMARY KEY AUTO_INCREMENT,
-  status              ENUM('ativa', 'cancelada', 'expirada') DEFAULT 'ativa',
-  data_inicio         DATE NOT NULL,
-  data_fim            DATE NULL,
-  fk_id_assinante     INT NOT NULL,
-  fk_id_plano         INT NOT NULL,
-  CONSTRAINT fk_assinatura_assinante FOREIGN KEY (fk_id_assinante) REFERENCES assinante(id_assinante),
-  CONSTRAINT fk_assinatura_plano FOREIGN KEY (fk_id_plano) REFERENCES plano(id_plano)
-);
-
--- -----------------------------------------------------
--- Tabela Metodo_Pagamento
--- -----------------------------------------------------
-CREATE TABLE metodo_pagamento (
-  id_metodo_pagamento INT PRIMARY KEY AUTO_INCREMENT,
-  detalhes VARCHAR(100) NOT NULL,
-  taxa DECIMAL(10,2) DEFAULT 0.00,
-  ativo BOOLEAN DEFAULT TRUE,
-  prazo_compensacao INT DEFAULT 0,
-  fk_id_assinante     INT NOT NULL,
-  CONSTRAINT fk_metodo_pagamento_assinante FOREIGN KEY (fk_id_assinante) REFERENCES assinante(id_assinante)
-);
-
--- -----------------------------------------------------
--- Tabela Pagamento
--- -----------------------------------------------------
-CREATE TABLE pagamento (
-  id_pagamento              INT PRIMARY KEY AUTO_INCREMENT,
-  valor DECIMAL(10,2) NOT NULL,
-  status ENUM('PENDENTE', 'PROCESSANDO', 'CONCLUIDO', 'FALHOU', 'ESTORNADO') NOT NULL,
-  data_pagamento DATETIME NOT NULL,
-  id_metodo_agamento INT,
-  fk_id_metodo_pagamento    INT NOT NULL,
-  fk_id_assinatura          INT NOT NULL,
-  CONSTRAINT fk_pagamento_metodo FOREIGN KEY (fk_id_metodo_pagamento) REFERENCES metodo_pagamento(id_metodo_pagamento),
-  CONSTRAINT fk_pagamento_assinatura FOREIGN KEY (fk_id_assinatura) REFERENCES assinatura(id_assinatura)
-);
-
--- -----------------------------------------------------
 -- Tabela Administrador
--- -----------------------------------------------------
 CREATE TABLE administrador (
-  id_administrador INT PRIMARY KEY AUTO_INCREMENT,
-  nome             VARCHAR(200) NOT NULL,
-  senha            VARCHAR(45) NOT NULL,
-  email            VARCHAR(45) NOT NULL
+    id_administrador INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(200) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(100) NOT NULL
 );
+
+-- Tabela Plano
+CREATE TABLE plano (
+    id_plano INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10,2) NOT NULL
+);
+
+-- Tabela Assinante (agora com a coluna id_plano)
+CREATE TABLE assinante (
+    id_assinante INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    cpf VARCHAR(20) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(100) NOT NULL,
+    id_plano INT NULL, -- permite assinante sem plano
+    FOREIGN KEY (id_plano) REFERENCES plano(id_plano)
+);
+
+USE servico_assinatura;
+
+-- 1 administrador (login padrão)
+INSERT INTO administrador (nome, email, senha) VALUES
+('Administrador Master', 'admin@admin.com', '123');
+
+-- 4 planos bem reais
+INSERT INTO plano (nome, descricao, preco) VALUES
+('Básico', 'Antivírus essencial + firewall', 29.90),
+('Premium', 'Proteção total + VPN ilimitada + gerenciador de senhas', 59.90),
+('Família', 'Até 5 dispositivos + controle parental', 89.90),
+('Empresarial', 'Até 20 dispositivos + suporte prioritário', 199.90);
+
+-- 7 assinantes variados (uns com plano, outros sem)
+INSERT INTO assinante (nome, cpf, email, senha, id_plano) VALUES
+('Maria Silva', '123.456.789-00', 'maria@gmail.com', '123456', 2),      -- Premium
+('João Pedro', '987.654.321-00', 'joao@hotmail.com', 'senha123', 1),   -- Básico
+('Ana Costa', '111.222.333-44', 'ana.costa@yahoo.com', 'ana2025', 3),   -- Família
+('Carlos Souza', '555.666.777-88', 'carlos@souza.com', 'carlos123', 4), -- Empresarial
+('Fernanda Lima', '999.888.777-66', 'fernanda.lima@gmail.com', 'fe123', NULL), -- Sem plano
+('Lucas Oliveira', '444.333.222-11', 'lucas.oli@outlook.com', 'lucas99', 2),   -- Premium
+('Patrícia Alves', '222.111.000-99', 'paty.alves@gmail.com', 'paty2024', 1);   -- Básico

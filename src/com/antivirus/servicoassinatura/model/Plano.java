@@ -11,6 +11,13 @@ public class Plano {
         // não coloca nada aqui!
     }
 
+    public Plano(int idPlano, String nome, String descricao, BigDecimal preco) {
+        this.idPlano = idPlano;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+    }
+
     public int getIdPlano(){
         return idPlano;
     }
